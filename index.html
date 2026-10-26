@@ -75,7 +75,7 @@
             justify-content: flex-start;
             background-color: #f8f9fa;
             border: 1px solid #e9ecef;
-            padding: 10px 15px;
+            padding: 12px 15px;
             border-radius: 8px;
             margin-bottom: 10px;
             cursor: pointer;
@@ -136,33 +136,30 @@
             <div id="q-box-1">
                 <p style="font-weight: bold; color: #e67e22; text-align: right;">س1: ما هو التصرف الصحيح عند استلام رابط مجهول يطلب تحديث بياناتك؟</p>
                 <div class="options-container">
-                    <label class="option-label"><input type="radio" name="q1" value="wrong"> أضغط عليه فوراً للتحقق</label>
-                    <label class="option-label"><input type="radio" name="q1" value="right"> أتجاهله وأبلغ عنه</label>
-                    <label class="option-label"><input type="radio" name="q1" value="wrong"> أشاركه مع صديقاتي</label>
+                    <label class="option-label" onclick="selectAndNext(1, 2)"><input type="radio" name="q1"> أضغط عليه فوراً للتحقق</label>
+                    <label class="option-label" onclick="selectAndNext(1, 2)"><input type="radio" name="q1"> أتجاهله وأبلغ عنه</label>
+                    <label class="option-label" onclick="selectAndNext(1, 2)"><input type="radio" name="q1"> أشاركه مع صديقاتي</label>
                 </div>
-                <button class="btn" onclick="nextQuestion(2)">السؤال التالي</button>
             </div>
 
             <!-- السؤال الثاني -->
             <div id="q-box-2" class="hidden">
                 <p style="font-weight: bold; color: #e67e22; text-align: right;">س2: ما هي إحدى علامات كلمة المرور القوية والآمنة؟</p>
                 <div class="options-container">
-                    <label class="option-label"><input type="radio" name="q2" value="wrong"> اسمك وتاريخ ميلادك</label>
-                    <label class="option-label"><input type="radio" name="q2" value="wrong"> أرقام متسلسلة مثل 123456</label>
-                    <label class="option-label"><input type="radio" name="q2" value="right"> خليط من رموز وأحرف وأرقام طويلة</label>
+                    <label class="option-label" onclick="selectAndNext(2, 3)"><input type="radio" name="q2"> اسمك وتاريخ ميلادك</label>
+                    <label class="option-label" onclick="selectAndNext(2, 3)"><input type="radio" name="q2"> أرقام متسلسلة مثل 123456</label>
+                    <label class="option-label" onclick="selectAndNext(2, 3)"><input type="radio" name="q2"> خليط من رموز وأحرف وأرقام طويلة</label>
                 </div>
-                <button class="btn" onclick="nextQuestion(3)">السؤال التالي</button>
             </div>
 
             <!-- السؤال الثالث -->
             <div id="q-box-3" class="hidden">
                 <p style="font-weight: bold; color: #e67e22; text-align: right;">س3: لماذا يُفضل تفعيل المصادقة الثنائية (2FA) على حسابك؟</p>
                 <div class="options-container">
-                    <label class="option-label"><input type="radio" name="q3" value="right"> لحماية الحساب حتى لو عرف المخترق كلمة المرور</label>
-                    <label class="option-label"><input type="radio" name="q3" value="wrong"> لتسريع فتح التطبيقات فقط</label>
-                    <label class="option-label"><input type="radio" name="q3" value="wrong"> لتقليل استهلاك البطارية</label>
+                    <label class="option-label" onclick="selectAndGoToStage2()"><input type="radio" name="q3"> لحماية الحساب حتى لو عرف المخترق كلمة المرور</label>
+                    <label class="option-label" onclick="selectAndGoToStage2()"><input type="radio" name="q3"> لتسريع فتح التطبيقات فقط</label>
+                    <label class="option-label" onclick="selectAndGoToStage2()"><input type="radio" name="q3"> لتقليل استهلاك البطارية</label>
                 </div>
-                <button class="btn" onclick="goToStage2()">التالي لمعرفة النتيجة</button>
             </div>
         </div>
 
@@ -208,34 +205,18 @@
     </div>
 
     <script>
-        function nextQuestion(qNum) {
-            const currentBox = document.getElementById('q-box-' + (qNum - 1));
-            const radios = currentBox.querySelectorAll('input[type="radio"]');
-            let answered = false;
-            radios.forEach(r => { if(r.checked) answered = true; });
-
-            if(!answered) {
-                alert('الرجاء اختيار إجابة قبل الانتقال للسؤال التالي!');
-                return;
-            }
-
-            currentBox.classList.add('hidden');
-            document.getElementById('q-box-' + qNum).classList.remove('hidden');
+        function selectAndNext(currentQ, nextQ) {
+            setTimeout(() => {
+                document.getElementById('q-box-' + currentQ).classList.add('hidden');
+                document.getElementById('q-box-' + nextQ).classList.remove('hidden');
+            }, 200); // تأخير بسيط جداً (0.2 ثانية) لترى المتدربة اختيارها قبل الانتقال
         }
 
-        function goToStage2() {
-            const currentBox = document.getElementById('q-box-3');
-            const radios = currentBox.querySelectorAll('input[type="radio"]');
-            let answered = false;
-            radios.forEach(r => { if(r.checked) answered = true; });
-
-            if(!answered) {
-                alert('الرجاء اختيار إجابة لمعرفة النتيجة!');
-                return;
-            }
-
-            document.getElementById('stage-1').classList.add('hidden');
-            document.getElementById('stage-2').classList.remove('hidden');
+        function selectAndGoToStage2() {
+            setTimeout(() => {
+                document.getElementById('stage-1').classList.add('hidden');
+                document.getElementById('stage-2').classList.remove('hidden');
+            }, 200);
         }
 
         function triggerTrap(event) {
