@@ -14,6 +14,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            transition: background-color 0.5s ease;
         }
         .container {
             background: white;
@@ -23,7 +24,20 @@
             width: 100%;
             max-width: 480px;
             text-align: center;
+            transition: all 0.5s ease;
         }
+        /* تأثير نبض احمر لصفحة الصدمة */
+        .danger-mode {
+            border: 3px solid #e74c3c;
+            box-shadow: 0 0 25px rgba(231, 76, 60, 0.4);
+            animation: pulse-border 1.5s infinite;
+        }
+        @keyframes pulse-border {
+            0% { border-color: #e74c3c; }
+            50% { border-color: #f1948a; }
+            100% { border-color: #e74c3c; }
+        }
+
         h2 { color: #2c3e50; margin-bottom: 20px; }
         p { color: #555; font-size: 15px; line-height: 1.6; }
         .btn {
@@ -104,7 +118,7 @@
 </head>
 <body>
 
-    <div class="container">
+    <div class="container" id="mainContainer">
         <!-- المرحلة الأولى: مسابقة الأمن السيبراني (3 أسئلة) -->
         <div id="stage-1">
             <h2>🛡️ مسابقة تحدي الأمن السيبراني</h2>
@@ -123,7 +137,7 @@
 
             <!-- السؤال الثاني -->
             <div id="q-box-2" class="hidden">
-                <p style="font-weight: bold; color: #e67e22; text-align: right;">س2: ما هي إحدى علامات كلمة المرور القوية والم آمنة؟</p>
+                <p style="font-weight: bold; color: #e67e22; text-align: right;">س2: ما هي إحدى علامات كلمة المرور القوية والآمنة؟</p>
                 <div class="options-container">
                     <label class="option-label"><input type="radio" name="q2" value="wrong"> اسمك وتاريخ ميلادك</label>
                     <label class="option-label"><input type="radio" name="q2" value="wrong"> أرقام متسلسلة مثل 123456</label>
@@ -182,14 +196,35 @@
                 2. الحذر من "الإلحاح" أو "الإغراء السريع" (الجوائز الوهمية).<br>
                 3. لا تشاركي كلمات المرور أبداً مهما كانت الأسباب.
             </div>
-
-           
         </div>
     </div>
 
     <script>
+        // دالة تشغيل صوت التنبيه التحذيري لحظة الصدمة
+        function playAlarmSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.type = 'sawtooth';
+                oscillator.frequency.setValueAtTime(300, audioCtx.currentTime); // تردد منخفض تحذيري
+                oscillator.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.4);
+                
+                gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.4);
+            } catch(e) {
+                // تتخطى المتصفحات التي تمنع الصوت التلقائي دون تفاعل سابق
+            }
+        }
+
         function nextQuestion(qNum) {
-            // التحقق البسيط من اختيار إجابة للسؤال الحالي
             const currentBox = document.getElementById('q-box-' + (qNum - 1));
             const radios = currentBox.querySelectorAll('input[type="radio"]');
             let answered = false;
@@ -229,22 +264,13 @@
                 return;
             }
 
+            // تفعيل صوت التحذير
+            playAlarmSound();
+
+            // الانتقال لصفحة الصدمة مع إضافة تأثير الإطار الأحمر النابض
             document.getElementById('stage-2').classList.add('hidden');
             document.getElementById('stage-3').classList.remove('hidden');
-        }
-
-        function resetDemo() {
-            document.getElementById('userEmail').value = '';
-            document.getElementById('userPass').value = '';
-            
-            // إرجاع الأسئلة لحالتها الأولى
-            document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
-            document.getElementById('q-box-3').classList.add('hidden');
-            document.getElementById('q-box-2').classList.add('hidden');
-            document.getElementById('q-box-1').classList.remove('hidden');
-
-            document.getElementById('stage-3').classList.add('hidden');
-            document.getElementById('stage-1').classList.remove('hidden');
+            document.getElementById('mainContainer').classList.add('danger-mode');
         }
     </script>
 
