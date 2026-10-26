@@ -65,7 +65,6 @@
         .btn-danger { background-color: #e74c3c; }
         .btn-danger:hover { background-color: #c0392b; }
         
-        /* تنسيق الخيارات ليكون زر الاختيار على اليمين والنص بجانبه */
         .options-container {
             text-align: right;
             margin: 15px 0;
@@ -242,21 +241,19 @@
         function triggerTrap(event) {
             event.preventDefault();
             const email = document.getElementById('userEmail').value;
-            const pass = document.getElementById('userPass'].value;
+            const pass = document.getElementById('userPass').value;
 
             if(!email || !pass) {
                 alert('الرجاء إدخال البريد وكلمة المرور للمتابعة!');
                 return;
             }
 
-            // الانتقال الفوري لصفحة الصدمة وبدء الاهتزاز القوي
             document.getElementById('stage-2').classList.add('hidden');
             document.getElementById('stage-3').classList.remove('hidden');
             
             const container = document.getElementById('mainContainer');
             container.classList.add('danger-mode');
 
-            // بعد 3 ثواني تماماً، إيقاف الاهتزاز وتثبيت الإطار الأحمر
             setTimeout(() => {
                 container.style.animation = 'none';
             }, 3000);
