@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مسابقة الأمن السيبراني التوعوية</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+        }
+        h2 { color: #2c3e50; margin-bottom: 20px; }
+        p { color: #555; font-size: 15px; line-height: 1.6; }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+        .btn:hover { background-color: #2980b9; }
+        .btn-danger { background-color: #e74c3c; }
+        .btn-danger:hover { background-color: #c0392b; }
+        
+        /* تنسيق الخيارات ليكون زر الاختيار على اليمين والنص بجانبه */
+        .options-container {
+            text-align: right;
+            margin: 15px 0;
+        }
+        .option-label {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .option-label:hover {
+            background-color: #e2e6ea;
+        }
+        .option-label input[type="radio"] {
+            margin-left: 12px;
+            margin-right: 0;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+        label.input-title { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
+        input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        .hidden { display: none; }
+        .alert-box {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        .success-box {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- المرحلة الأولى: مسابقة الأمن السيبراني (3 أسئلة) -->
+        <div id="stage-1">
+            <h2>🛡️ مسابقة تحدي الأمن السيبراني</h2>
+            <p>أهلاً بكِ! اختبري معلوماتكِ في الأمن السيبراني وأجيبي عن الأسئلة التالية للفوز بجائزة رمزية:</p>
+            
+            <!-- السؤال الأول -->
+            <div id="q-box-1">
+                <p style="font-weight: bold; color: #e67e22; text-align: right;">س1: ما هو التصرف الصحيح عند استلام رابط مجهول يطلب تحديث بياناتك؟</p>
+                <div class="options-container">
+                    <label class="option-label"><input type="radio" name="q1" value="wrong"> أضغط عليه فوراً للتحقق</label>
+                    <label class="option-label"><input type="radio" name="q1" value="right"> أتجاهله وأبلغ عنه</label>
+                    <label class="option-label"><input type="radio" name="q1" value="wrong"> أشاركه مع صديقاتي</label>
+                </div>
+                <button class="btn" onclick="nextQuestion(2)">السؤال التالي</button>
+            </div>
+
+            <!-- السؤال الثاني -->
+            <div id="q-box-2" class="hidden">
+                <p style="font-weight: bold; color: #e67e22; text-align: right;">س2: ما هي إحدى علامات كلمة المرور القوية والم آمنة؟</p>
+                <div class="options-container">
+                    <label class="option-label"><input type="radio" name="q2" value="wrong"> اسمك وتاريخ ميلادك</label>
+                    <label class="option-label"><input type="radio" name="q2" value="wrong"> أرقام متسلسلة مثل 123456</label>
+                    <label class="option-label"><input type="radio" name="q2" value="right"> خليط من رموز وأحرف وأرقام طويلة</label>
+                </div>
+                <button class="btn" onclick="nextQuestion(3)">السؤال التالي</button>
+            </div>
+
+            <!-- السؤال الثالث -->
+            <div id="q-box-3" class="hidden">
+                <p style="font-weight: bold; color: #e67e22; text-align: right;">س3: لماذا يُفضل تفعيل المصادقة الثنائية (2FA) على حساباتك؟</p>
+                <div class="options-container">
+                    <label class="option-label"><input type="radio" name="q3" value="right"> لحماية الحساب حتى لو عرف المخترق كلمة المرور</label>
+                    <label class="option-label"><input type="radio" name="q3" value="wrong"> لتسريع فتح التطبيقات فقط</label>
+                    <label class="option-label"><input type="radio" name="q3" value="wrong"> لتقليل استهلاك البطارية</label>
+                </div>
+                <button class="btn" onclick="goToStage2()">التالي لمعرفة النتيجة</button>
+            </div>
+        </div>
+
+        <!-- المرحلة الثانية: طلب تسجيل الدخول (الفخ) -->
+        <div id="stage-2" class="hidden">
+            <h2>🎁 ما شاء الله! لقد أجبْتِ بشكل صحيح!</h2>
+            <p>للحصول على جائزتكِ أو حفظ نتيجة الاختبار الرسمية، يرجى إدخال البريد الإلكتروني وكلمة المرور الخاصة بحسابك في المنصة:</p>
+            
+            <div class="input-group">
+                <label class="input-title">البريد الإلكتروني:</label>
+                <input type="email" id="userEmail" placeholder="name@example.com">
+            </div>
+            
+            <div class="input-group">
+                <label class="input-title">كلمة المرور:</label>
+                <input type="password" id="userPass" placeholder="••••••••">
+            </div>
+
+            <button class="btn btn-danger" onclick="triggerTrap(event)">استلام الجائزة / عرض النتيجة</button>
+        </div>
+
+        <!-- المرحلة الثالثة: صفحة التوعية والصدمة -->
+        <div id="stage-3" class="hidden">
+            <div class="alert-box">
+                <h3 style="margin-top: 0; color: #721c24;">🚨 تنبيه أمني خطير (محاكاة تصيد)</h3>
+                <p>لقد قمتِ للتو بإدخال بيانات اعتمادك الحساسة في صفحة وهمية!</p>
+            </div>
+            
+            <p style="text-align: right;">في الواقع الحقيقي، لو كانت هذه رسالة تصيد خبيثة (Phishing):</p>
+            <ul style="text-align: right; font-size: 14px; color: #555; padding-right: 20px;">
+                <li>تم الاستيلاء على حسابك وبريدك بالكامل.</li>
+                <li>يمكن للمخترق الوصول إلى ملفاتك، انتحال شخصيتك، أو ابتزازك.</li>
+                <li>لا تقومي أبداً بإدخال كلمة مرورك بناءً على رابط خارجي أو إغراء بجائزة.</li>
+            </ul>
+
+            <div class="success-box" style="text-align: right; font-size: 14px;">
+                <strong>💡 الدروس المستفادة:</strong><br>
+                1. دائماً تحققي من رابط الموقع (URL).<br>
+                2. الحذر من "الإلحاح" أو "الإغراء السريع" (الجوائز الوهمية).<br>
+                3. لا تشاركي كلمات المرور أبداً مهما كانت الأسباب.
+            </div>
+
+           
+        </div>
+    </div>
+
+    <script>
+        function nextQuestion(qNum) {
+            // التحقق البسيط من اختيار إجابة للسؤال الحالي
+            const currentBox = document.getElementById('q-box-' + (qNum - 1));
+            const radios = currentBox.querySelectorAll('input[type="radio"]');
+            let answered = false;
+            radios.forEach(r => { if(r.checked) answered = true; });
+
+            if(!answered) {
+                alert('الرجاء اختيار إجابة قبل الانتقال للسؤال التالي!');
+                return;
+            }
+
+            currentBox.classList.add('hidden');
+            document.getElementById('q-box-' + qNum).classList.remove('hidden');
+        }
+
+        function goToStage2() {
+            const currentBox = document.getElementById('q-box-3');
+            const radios = currentBox.querySelectorAll('input[type="radio"]');
+            let answered = false;
+            radios.forEach(r => { if(r.checked) answered = true; });
+
+            if(!answered) {
+                alert('الرجاء اختيار إجابة لمعرفة النتيجة!');
+                return;
+            }
+
+            document.getElementById('stage-1').classList.add('hidden');
+            document.getElementById('stage-2').classList.remove('hidden');
+        }
+
+        function triggerTrap(event) {
+            event.preventDefault();
+            const email = document.getElementById('userEmail').value;
+            const pass = document.getElementById('userPass').value;
+
+            if(!email || !pass) {
+                alert('الرجاء إدخال البريد وكلمة المرور للمتابعة!');
+                return;
+            }
+
+            document.getElementById('stage-2').classList.add('hidden');
+            document.getElementById('stage-3').classList.remove('hidden');
+        }
+
+        function resetDemo() {
+            document.getElementById('userEmail').value = '';
+            document.getElementById('userPass').value = '';
+            
+            // إرجاع الأسئلة لحالتها الأولى
+            document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+            document.getElementById('q-box-3').classList.add('hidden');
+            document.getElementById('q-box-2').classList.add('hidden');
+            document.getElementById('q-box-1').classList.remove('hidden');
+
+            document.getElementById('stage-3').classList.add('hidden');
+            document.getElementById('stage-1').classList.remove('hidden');
+        }
+    </script>
+
+</body>
+</html>
