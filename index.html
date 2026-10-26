@@ -26,12 +26,23 @@
             text-align: center;
             transition: all 0.5s ease;
         }
-        /* تأثير نبض احمر لصفحة الصدمة */
+        
+        /* تأثير الاهتزاز والإطار الأحمر لصفحة الصدمة */
         .danger-mode {
             border: 3px solid #e74c3c;
-            box-shadow: 0 0 25px rgba(231, 76, 60, 0.4);
-            animation: pulse-border 1.5s infinite;
+            box-shadow: 0 0 30px rgba(231, 76, 60, 0.6);
+            animation: shake 0.5s ease-in-out, pulse-border 1.5s infinite;
         }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-10px); }
+            80% { transform: translateX(10px); }
+            100% { transform: translateX(0); }
+        }
+
         @keyframes pulse-border {
             0% { border-color: #e74c3c; }
             50% { border-color: #f1948a; }
@@ -148,7 +159,7 @@
 
             <!-- السؤال الثالث -->
             <div id="q-box-3" class="hidden">
-                <p style="font-weight: bold; color: #e67e22; text-align: right;">س3: لماذا يُفضل تفعيل المصادقة الثنائية (2FA) على حساباتك؟</p>
+                <p style="font-weight: bold; color: #e67e22; text-align: right;">س3: لماذا يُفضل تفعيل المصادقة الثنائية (2FA) على حسابك؟</p>
                 <div class="options-container">
                     <label class="option-label"><input type="radio" name="q3" value="right"> لحماية الحساب حتى لو عرف المخترق كلمة المرور</label>
                     <label class="option-label"><input type="radio" name="q3" value="wrong"> لتسريع فتح التطبيقات فقط</label>
@@ -200,30 +211,6 @@
     </div>
 
     <script>
-        // دالة تشغيل صوت التنبيه التحذيري لحظة الصدمة
-        function playAlarmSound() {
-            try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioCtx.createOscillator();
-                const gainNode = audioCtx.createGain();
-                
-                oscillator.type = 'sawtooth';
-                oscillator.frequency.setValueAtTime(300, audioCtx.currentTime); // تردد منخفض تحذيري
-                oscillator.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.4);
-                
-                gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-                
-                oscillator.start();
-                oscillator.stop(audioCtx.currentTime + 0.4);
-            } catch(e) {
-                // تتخطى المتصفحات التي تمنع الصوت التلقائي دون تفاعل سابق
-            }
-        }
-
         function nextQuestion(qNum) {
             const currentBox = document.getElementById('q-box-' + (qNum - 1));
             const radios = currentBox.querySelectorAll('input[type="radio"]');
@@ -264,10 +251,7 @@
                 return;
             }
 
-            // تفعيل صوت التحذير
-            playAlarmSound();
-
-            // الانتقال لصفحة الصدمة مع إضافة تأثير الإطار الأحمر النابض
+            // الانتقال لصفحة الصدمة مع تفعيل تأثير الاهتزاز والإطار الأحمر
             document.getElementById('stage-2').classList.add('hidden');
             document.getElementById('stage-3').classList.remove('hidden');
             document.getElementById('mainContainer').classList.add('danger-mode');
